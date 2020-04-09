@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+    <PropertyGroup>
+        <UseWPF>true</UseWPF>
+        <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
+    </PropertyGroup>
+
+</Project>
