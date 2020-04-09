@@ -1,0 +1,25 @@
+﻿<Window x:Class="SandBox.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SandBox"
+        d:DataContext="{d:DesignInstance {x:Type local:MainWindowVm}"
+        xmlns:tsTimeline="clr-namespace:TsTimeline;assembly=TsTimeline"
+        mc:Ignorable="d"
+        Title="1000 tracks &amp; 3000 clips demo" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <ItemsControl ItemsSource="{Binding Tracks}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <tsTimeline:TsTimeline Grid.Column="1" Maximum="4000" Tracks="{Binding Tracks}"/>
+    </Grid>
+</Window>
