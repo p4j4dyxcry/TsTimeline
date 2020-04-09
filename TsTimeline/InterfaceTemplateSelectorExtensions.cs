@@ -1,25 +1,18 @@
 ﻿using System;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
 
 namespace TsTimeline
 {
     public class InterfaceTemplateSelectorExtension : System.Windows.Markup.MarkupExtension
     {
-        public string ResourceKeys { get; }
-        
-        public string ResourceKeysSeparator { get; }
-        
-        public InterfaceTemplateSelectorExtension() : this(string.Empty , ",")
-        {
-        }
+        private string ResourceKeys { get; }
+
+        private string ResourceKeysSeparator { get; }
 
         public InterfaceTemplateSelectorExtension(string resourceKeysCsv) : this( resourceKeysCsv , "," )
         {
         }
 
-        public InterfaceTemplateSelectorExtension(string resourceKeys, string separator)
+        private InterfaceTemplateSelectorExtension(string resourceKeys, string separator)
         {
             ResourceKeys = resourceKeys;
             ResourceKeysSeparator = separator;
@@ -27,8 +20,7 @@ namespace TsTimeline
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            return new InterfaceTemplateSelector(ResourceKeys.Split(new string[] {ResourceKeysSeparator},
-                StringSplitOptions.RemoveEmptyEntries));
+            return new InterfaceTemplateSelector(ResourceKeys.Split(new [] {ResourceKeysSeparator}, StringSplitOptions.RemoveEmptyEntries));
         }
     }
 }

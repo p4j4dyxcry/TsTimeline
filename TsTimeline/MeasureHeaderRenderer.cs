@@ -42,7 +42,7 @@ namespace TsTimeline
             RaiseInvalidateVisual();
         }
 
-        private Throttler throttler;
+        private Throttler _throttler;
         private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if (Math.Abs(e.HorizontalChange) > 0)
@@ -51,20 +51,34 @@ namespace TsTimeline
 
         private void RaiseInvalidateVisual()
         {
-            if(throttler is null)
-                throttler = new Throttler(TimeSpan.FromMilliseconds(10) , InvalidateVisual);
-            throttler.Invoke();
+            if(_throttler is null)
+                _throttler = new Throttler(TimeSpan.FromMilliseconds(10) , InvalidateVisual);
+            _throttler.Invoke();
         }
 
-        public MeasureHeaderRenderer()
+        int scale_factor(double scale)
         {
-
+            if (scale >= 16)
+                return 1;
+            if (scale >= 8)
+                return 5;
+            if (Scale >= 4)
+                return 10;
+            if (scale >= 2)
+                return 25;
+            if (scale >= 1)
+                return 50;
+            if (scale >= 0.5)
+                return 100;
+            return 200;
         }
         
         
         protected override void OnRender(DrawingContext drawingContext)
         {
-            double offset = 20;
+            
+            
+            double offset = 35;
             double prev = -offset;
             int maxValue = (int) (ActualWidth * (1.0 / Scale) + 0.5);
 
@@ -76,24 +90,18 @@ namespace TsTimeline
                 startValue = ScrollViewer.HorizontalOffset;
                 endValue = ScrollViewer.ActualWidth;
             }
+
+            var factor = scale_factor(Scale);
             
-            for (int i = 0; i <= maxValue; i++)
+            for (int i = 0; i <= maxValue; i+=factor)
             {
-                var snapedScale = MathEx.Snap(i * Scale, 5);
-
-
                 var x = (i * Scale);
 
-                if (snapedScale - prev < offset)
-                    continue;
-                                
                 if (x < startValue)
                     continue;
 
                 if (x >= startValue + endValue)
                     break;
-
-                prev = snapedScale;
 
                 var alignment = TextAlignment.TopCenter;
                 if (i == 0)
@@ -105,8 +113,6 @@ namespace TsTimeline
             RenderLine(drawingContext);
         }
 
-        private StreamGeometry _streamGeometry = new StreamGeometry();
-
         private void RenderLine(DrawingContext drawingContext)
         {    
             var pen = new Pen()
@@ -115,7 +121,6 @@ namespace TsTimeline
                 Thickness = 0.1d,
             };
 
-            var drawcall = 0;
             var length = ActualWidth;
             if (Scale < 1)
                 length = ActualWidth * (1.0f / Scale);
@@ -151,14 +156,9 @@ namespace TsTimeline
                     h = u.ActualHeight;
 
                 var beginY = h;
-                var endY = 0;
-
-                var b = ((int) 10 * 10);
-                drawcall++;
+                var endY = 10;
                 drawingContext.DrawLine(pen, new Point(x - startValue, beginY) , new Point(x - startValue, endY) );
             }
-
-            Console.WriteLine($"drawcall-{drawcall}");
         }
     }
 }

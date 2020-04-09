@@ -46,7 +46,7 @@ namespace TsTimeline
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            TryGetThumb(out var thumb);
+            TryGetThumb(out _);
         }
 
         private void Thumb_OnDragDelta(Vector vector)

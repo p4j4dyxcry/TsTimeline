@@ -26,7 +26,7 @@ namespace TsTimeline
             while (_lastInvoked + _timeSpan > DateTime.Now)
             {
                 await Task.Delay(1);
-            };
+            }
 
             _invoked = false;
             

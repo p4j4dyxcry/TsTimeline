@@ -2,12 +2,12 @@
 {
     public interface IHoldClipDataContext
     {
-        public double StartValue { get; set; }
-        public double EndValue { get; set; }
+        double StartValue { get; set; }
+        double EndValue { get; set; }
     }
 
     public interface ITriggerClipDataContext
     {
-        public double Value { get; set; }
+        double Value { get; set; }
     }
 }

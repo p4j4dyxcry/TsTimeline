@@ -184,8 +184,6 @@ namespace TsTimeline
                 _center.Width = w;
             else
             {
-                ;
-                ;//  Debug.Assert(false);
             }
         }
     }

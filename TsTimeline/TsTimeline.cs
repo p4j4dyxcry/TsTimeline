@@ -112,7 +112,7 @@ namespace TsTimeline
 
             drawingContext.DrawLine(pen,new Point(x + startSnap,0)  ,new Point(x + startSnap,ActualHeight) );
             
-            drawingContext.DrawTextEx($"{Math.Ceiling((x + start - 0.5 ) * (1.0 / Scale)) }",mouse.X + 2, mouse.Y - 10,TextAlignment.TopLeft);
+            drawingContext.DrawTextEx($"{Math.Ceiling((x + start - 0.5 ) * (1.0 / Scale)) }",mouse.X + 2, mouse.Y - 10);
         }
     }
 }
