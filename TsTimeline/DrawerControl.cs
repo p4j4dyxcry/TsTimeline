@@ -4,6 +4,9 @@ using System.Windows.Media;
 
 namespace TsTimeline
 {
+    /// <summary>
+    /// 任意の描画を行うコントロールです。
+    /// </summary>
     public class DrawerControl : Control
     {
         private readonly Action<DrawingContext> _render;

@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 
 namespace TsTimeline
 {
+    /// <summary>
+    /// 時間内に複数発行された場合、最後のタイミングでActionを実行するクラスです。
+    /// </summary>
     public class Throttler
     {
         private readonly Action _action;

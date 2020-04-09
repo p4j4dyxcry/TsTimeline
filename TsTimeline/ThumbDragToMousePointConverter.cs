@@ -5,6 +5,9 @@ using System.Windows.Input;
 
 namespace TsTimeline
 {
+    /// <summary>
+    /// Thumbのドラッグデルタをドラッグ開始地点からの差分に変換してイベントにバインドします。
+    /// </summary>
     public class ThumbDragToMousePointConverter
     {
         private Point _prevPoint = new Point(0,0);
