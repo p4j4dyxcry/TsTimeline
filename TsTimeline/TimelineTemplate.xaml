@@ -1,6 +1,27 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:timelineControl="clr-namespace:TsTimeline">
+    <DataTemplate DataType="{x:Type timelineControl:IHoldClipDataContext}">
+        <timelineControl:HoldClip
+            UseLayoutRounding="False"
+            Scale="{Binding Scale , RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
+            StartValue="{Binding StartValue}"
+            EndValue="{Binding EndValue}"
+            Width="{Binding CanvasActualWidth, RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
+            Height="{Binding TrackHeight , RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
+            Background="LightSlateGray" ClipToBounds="False" />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type timelineControl:ITriggerClipDataContext}">
+        <timelineControl:TriggerClip
+            UseLayoutRounding="False"
+            Scale="{Binding Scale , RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
+            Value="{Binding Value}"
+            Width="{Binding CanvasActualWidth, RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
+            Height="{Binding TrackHeight , RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
+            ClipToBounds="False" />
+    </DataTemplate>
+    
     <Style TargetType="{x:Type timelineControl:TsTimeline}">
         <Setter Property="UseLayoutRounding" Value="True" />
         <Setter Property="Template">
@@ -20,41 +41,16 @@
                                       VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible"
                                       HorizontalContentAlignment="Left">
                             <ItemsControl ItemsSource="{TemplateBinding Tracks}" HorizontalAlignment="Left">
-                                <ItemsControl.Resources>
-                                    <DataTemplate DataType="{x:Type timelineControl:IHoldClipDataContext}"
-                                                  x:Key="holdTemplate">
-                                        <timelineControl:HoldClip
-                                            UseLayoutRounding="False"
-                                            Scale="{Binding Scale , RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
-                                            StartValue="{Binding StartValue}"
-                                            EndValue="{Binding EndValue}"
-                                            Width="{Binding CanvasActualWidth, RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
-                                            Height="{Binding TrackHeight , RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
-                                            Background="LightSlateGray" ClipToBounds="False" />
-                                    </DataTemplate>
-                                    <DataTemplate DataType="{x:Type timelineControl:ITriggerClipDataContext}"
-                                                  x:Key="triggerTemplate">
-                                        <timelineControl:TriggerClip
-                                            UseLayoutRounding="False"
-                                            Scale="{Binding Scale , RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
-                                            Value="{Binding Value}"
-                                            Width="{Binding CanvasActualWidth, RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
-                                            Height="{Binding TrackHeight , RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
-                                            ClipToBounds="False" />
-                                    </DataTemplate>
-                                </ItemsControl.Resources>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Grid>
-                                            <ItemsControl ItemsSource="{Binding Clips}"
-                                                          ItemTemplateSelector="{timelineControl:InterfaceTemplateSelector 'triggerTemplate,holdTemplate'}">
-                                                <ItemsControl.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <Grid />
-                                                    </ItemsPanelTemplate>
-                                                </ItemsControl.ItemsPanel>
-                                            </ItemsControl>
-                                        </Grid>
+                                        <ItemsControl ItemsSource="{Binding Clips}"
+                                                      ItemTemplateSelector="{timelineControl:InterfaceTemplateSelector}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <Grid />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                        </ItemsControl>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
