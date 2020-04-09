@@ -6,7 +6,6 @@ using System.Windows.Media;
 
 namespace TsTimeline
 {
-
     public static class VisualTreeExtensions
     {
         public static T FindChild<T>(this FrameworkElement root, Func<FrameworkElement, bool> compare = null) 
