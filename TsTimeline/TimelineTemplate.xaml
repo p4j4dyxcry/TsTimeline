@@ -55,7 +55,7 @@
                                 <timelineControl:ScrollViewerBindBehavior
                                     Target="{Binding ElementName=PART_SCROLL_VIEWER}" />
                             </b:Interaction.Behaviors>
-                            <ItemsControl ItemsSource="{TemplateBinding Tracks}" AlternationCount="1" />
+                            <ItemsControl ItemsSource="{TemplateBinding Tracks}" AlternationCount="2" />
                         </ScrollViewer>
                         <timelineControl:MeasureRenderer
                             Grid.Column="1"
@@ -71,8 +71,7 @@
                                       x:Name="PART_SCROLL_VIEWER"
                                       VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible"
                                       HorizontalContentAlignment="Left">
-                            <ItemsControl ItemsSource="{TemplateBinding Tracks}" HorizontalAlignment="Left"
-                                          AlternationCount="3">
+                            <ItemsControl ItemsSource="{TemplateBinding Tracks}" HorizontalAlignment="Left">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Border x:Name="bd">
