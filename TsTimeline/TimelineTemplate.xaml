@@ -69,9 +69,10 @@
                                       Grid.Column="1"
                                       Margin="0,15,0,0"
                                       x:Name="PART_SCROLL_VIEWER"
+                                      Background="Transparent" 
                                       VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible"
                                       HorizontalContentAlignment="Left">
-                            <ItemsControl ItemsSource="{TemplateBinding Tracks}" HorizontalAlignment="Left">
+                            <ItemsControl ItemsSource="{TemplateBinding Tracks}" HorizontalAlignment="Left" x:Name="PART_TimeLineContentHost" Background="Transparent">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Border x:Name="bd">

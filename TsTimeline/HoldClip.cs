@@ -8,7 +8,7 @@ namespace TsTimeline
     [TemplatePart(Name="PART_LEFT", Type=typeof(Thumb))]
     [TemplatePart(Name="PART_RIGHT", Type=typeof(Thumb))]
     [TemplatePart(Name="PART_CENTER", Type=typeof(Thumb))]
-    public class HoldClip : Control
+    public class HoldClip : ClipBase
     {
         public static readonly DependencyProperty StartValueProperty =
             DepProp.Register<HoldClip, double>(
@@ -33,22 +33,10 @@ namespace TsTimeline
             set => SetValue(EndValueProperty, value);
         }
 
-        public static readonly DependencyProperty IsReadOnlyProperty = 
-            DepProp.Register<HoldClip, bool>(nameof(IsReadOnly));
-
-        public bool IsReadOnly
+        protected override void OnScaleChanged()
         {
-            get => (bool) GetValue(IsReadOnlyProperty);
-            set => SetValue(IsReadOnlyProperty, value);
-        }
-
-        public static readonly DependencyProperty ScaleProperty =
-            DepProp.Register<HoldClip, double>(nameof(Scale),1, OnValueChanged);
-
-        public double Scale
-        {
-            get => (double) GetValue(ScaleProperty);
-            set => SetValue(ScaleProperty, value);
+            base.OnScaleChanged();
+            UpdateThumbs();
         }
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -151,13 +139,13 @@ namespace TsTimeline
 
             if (result)
             {
-                var leftBinder = new ThumbDragToMousePointConverter(_left);
+                var leftBinder = new ThumbDragToMousePointConverter(_left,OnMouseDownSelectedChanged);
                 leftBinder.BindDragDelta(Left_OnDragDelta);
                 
-                var rightBinder = new ThumbDragToMousePointConverter(_right);
+                var rightBinder = new ThumbDragToMousePointConverter(_right,OnMouseDownSelectedChanged);
                 rightBinder.BindDragDelta(Right_OnDragDelta);
                 
-                var centerBinder = new ThumbDragToMousePointConverter(_center);
+                var centerBinder = new ThumbDragToMousePointConverter(_center,OnMouseDownSelectedChanged);
                 centerBinder.BindDragDelta(Center_OnDragDelta);
                 
                 Loaded += (s, e) =>

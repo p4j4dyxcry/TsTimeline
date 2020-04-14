@@ -6,7 +6,7 @@ using System.Windows.Controls.Primitives;
 namespace TsTimeline
 {
     [TemplatePart(Name="PART_THUMB", Type=typeof(Thumb))]
-    public class TriggerClip : Control
+    public class TriggerClip : ClipBase
     {
         public static readonly DependencyProperty ValueProperty =
             DepProp.Register<TriggerClip, double>(
@@ -14,34 +14,21 @@ namespace TsTimeline
                 FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                 OnValueChanged);
 
-        public static readonly DependencyProperty IsReadOnlyProperty =
-            DepProp.Register<TriggerClip, bool>(nameof(IsReadOnly));
-
-        public static readonly DependencyProperty ScaleProperty =
-            DepProp.Register<TriggerClip, double>(nameof(Scale), 1, OnValueChanged);
-
         public double Value
         {
             get => (double) GetValue(ValueProperty);
             set => SetValue(ValueProperty, value);
         }
 
-        public bool IsReadOnly
-        {
-            get => (bool) GetValue(IsReadOnlyProperty);
-            set => SetValue(IsReadOnlyProperty, value);
-        }
-
-        public double Scale
-        {
-            get => (double) GetValue(ScaleProperty);
-            set => SetValue(ScaleProperty, value);
-        }
-        
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is TriggerClip t)
+            if(d is TriggerClip t)
                 t.UpdateThumb();
+        }
+
+        protected override void OnScaleChanged()
+        {
+            this.UpdateThumb();
         }
 
         public override void OnApplyTemplate()
@@ -84,7 +71,7 @@ namespace TsTimeline
 
             if (thumb != null)
             {
-                var eventBinder = new ThumbDragToMousePointConverter(thumb);
+                var eventBinder = new ThumbDragToMousePointConverter(thumb,OnMouseDownSelectedChanged);
                 eventBinder.BindDragDelta(Thumb_OnDragDelta);
                 Loaded += (s, e) =>
                 {

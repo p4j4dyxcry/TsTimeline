@@ -8,6 +8,7 @@ using System.Windows.Media;
 namespace TsTimeline
 {
     [TemplatePart(Name="PART_SCROLL_VIEWER", Type=typeof(ScrollViewer))]
+    [TemplatePart(Name = "PART_TimeLineContentHost" , Type = typeof(ItemsControl))]
     public class TsTimeline : Control
     {
         public static readonly DependencyProperty MaximumProperty =
@@ -92,7 +93,6 @@ namespace TsTimeline
             get { return (Brush) GetValue(Alter1Property); }
             set { SetValue(Alter1Property, value); }
         }
-        
         public TsTimeline()
         {
             LayoutUpdated += (s, e) =>
@@ -142,6 +142,16 @@ namespace TsTimeline
         {
             base.OnApplyTemplate();
             ScrollViewer = GetTemplateChild("PART_SCROLL_VIEWER") as ScrollViewer;
+
+            var itemsHost = GetTemplateChild("PART_TimeLineContentHost") as ItemsControl;
+            
+            if (itemsHost != null)
+            {
+                itemsHost.MouseDown += (s, e) =>
+                {
+                    ClipBase.ClipSelectorService.ClearSelect();
+                };                
+            }
         }
     }
 }

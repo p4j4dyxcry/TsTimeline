@@ -13,12 +13,13 @@ namespace TsTimeline
         private Point _prevPoint = new Point(0,0);
         private readonly Thumb _thumb;
         
-        public ThumbDragToMousePointConverter(Thumb thumb)
+        public ThumbDragToMousePointConverter(Thumb thumb , Action mouseDown)
         {
             _thumb = thumb;
             _thumb.DragStarted += (s, e) =>
             {
                 _prevPoint = Mouse.GetPosition(thumb);
+                mouseDown?.Invoke();
             };
         }
 
