@@ -8,7 +8,25 @@
         xmlns:tsTimeline="clr-namespace:TsTimeline;assembly=TsTimeline"
         mc:Ignorable="d"
         Title="1000 tracks &amp; 3000 clips demo" Height="450" Width="800">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type local:TrackVm}"> 
+            <Grid> 
+                <Grid.ColumnDefinitions> 
+                    <ColumnDefinition Width="100"/> 
+                    <ColumnDefinition Width="10"/> 
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="50"/>
+                </Grid.ColumnDefinitions> 
+                <TextBlock Text="{Binding Name}"/> 
+                <TextBox  Text="{Binding Min , Mode=OneWay}" IsReadOnly="True" Grid.Column="2"/> 
+                <TextBox  Text="{Binding Max , Mode=OneWay}" IsReadOnly="True" Grid.Column="3"/> 
+            </Grid> 
+        </DataTemplate> 
+    </Window.Resources>
 
-    <tsTimeline:TsTimeline Maximum="4000" Tracks="{Binding Tracks}"/>
+    <!-- <ListView ItemsSource="{Binding Tracks}" ItemTemplateSelector="{tsTimeline:InterfaceTemplateSelector}"/> -->
+    <tsTimeline:TsTimeline Maximum="1000" Tracks="{Binding Tracks}"/>
+    <!-- -->
+    <!-- <ContentPresenter Content="{Binding Tracks[0]}"></ContentPresenter> -->
     
 </Window>

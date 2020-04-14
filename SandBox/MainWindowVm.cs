@@ -18,6 +18,18 @@ namespace SandBox
 
     public class TrackVm : Notification
     {
+        public string Name => "Test Track";
+
+        public double Min
+        {
+            get => Clips.OfType<IHoldClipDataContext>().Min(x => x.StartValue);
+        }
+        
+        public double Max
+        {
+            get => Clips.OfType<IHoldClipDataContext>().Max(x => x.EndValue);
+        }
+        
         public ObservableCollection<Notification> Clips { get; } = new ObservableCollection<Notification>();
     }
 
@@ -27,9 +39,9 @@ namespace SandBox
 
         public MainWindowVm()
         {
-            var maxinum = 4000;
+            var maxinum = 1000;
             var rand = new Random();
-            foreach (var track in Enumerable.Range(0, 500))
+            foreach (var track in Enumerable.Range(0, 100))
             {
                 var start = rand.Next(maxinum);
                 var end = start + rand.Next(maxinum - start);

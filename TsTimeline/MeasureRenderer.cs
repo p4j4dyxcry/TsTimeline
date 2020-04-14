@@ -7,25 +7,50 @@ namespace TsTimeline
 {
     public class MeasureRenderer : Control
     {
-        public static readonly DependencyProperty ScrollViewerProperty = DependencyProperty.Register(
-            "ScrollViewer", typeof(ScrollViewer), typeof(MeasureRenderer),
-            new PropertyMetadata(default(ScrollViewer), ScrollViewerChanged));
+        public static readonly DependencyProperty ScrollViewerProperty =
+            DepProp.Register<MeasureRenderer, ScrollViewer>(nameof(ScrollViewer),ScrollViewerChanged);
+
+        public static readonly DependencyProperty ScaleProperty = 
+            DepProp.Register<MeasureRenderer,double>(nameof(Scale),1d);
+        
+        public static readonly DependencyProperty ItemHeightProperty = 
+            DepProp.Register<MeasureRenderer,double>(nameof(ItemHeight),15d);
+
+        public static readonly DependencyProperty Alter0Property =
+            DepProp.Register<MeasureRenderer, Brush>(nameof(Alter0),Brushes.FloralWhite);
+
+        public static readonly DependencyProperty Alter1Property =
+            DepProp.Register<MeasureRenderer, Brush>(nameof(Alter1),Brushes.WhiteSmoke);
 
         public ScrollViewer ScrollViewer
         {
             get => (ScrollViewer) GetValue(ScrollViewerProperty);
             set => SetValue(ScrollViewerProperty, value);
         }
-
-        public static readonly DependencyProperty ScaleProperty = DependencyProperty.Register(
-            "Scale", typeof(double), typeof(MeasureRenderer), new PropertyMetadata(1d));
-
         public double Scale
         {
             get => (double) GetValue(ScaleProperty);
             set => SetValue(ScaleProperty, value);
         }
+        public double ItemHeight
+        {
+            get => (double) GetValue(ItemHeightProperty);
+            set => SetValue(ItemHeightProperty, value);
+        }
+        public Brush Alter0
+        {
+            get { return (Brush) GetValue(Alter0Property); }
+            set { SetValue(Alter0Property, value); }
+        }
 
+        public Brush Alter1
+        {
+            get { return (Brush) GetValue(Alter1Property); }
+            set { SetValue(Alter1Property, value); }
+        }
+
+        private double _offset = 15;
+        
         private static void ScrollViewerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is MeasureRenderer m)
@@ -40,14 +65,14 @@ namespace TsTimeline
                 oldValue.ScrollChanged -= OnScrollChanged;
 
             RaiseInvalidateVisual();
+            
+            void OnScrollChanged(object sender, ScrollChangedEventArgs e)
+            {
+                RaiseInvalidateVisual();
+            }
         }
 
         private Throttler _throttler;
-        private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            if (Math.Abs(e.HorizontalChange) > 0)
-                RaiseInvalidateVisual();
-        }
 
         private void RaiseInvalidateVisual()
         {
@@ -79,12 +104,16 @@ namespace TsTimeline
                 return 50;
             if (scale >= 0.5)
                 return 100;
-            return 200;
+            if (scale >= 0.25)
+                return 200;
+            if (scale >= 0.125)
+                return 400;
+            return 800;
         }
         
         protected override void OnRender(DrawingContext drawingContext)
         {
-            int maxValue = (int) (ActualWidth * (1.0 / Scale) + 0.5);
+            int maxValue = (int) ((ActualWidth+ 0.5) * (1.0 / Scale) );
             var factor = scale_factor(Scale);
             
             for (int i = 0; i <= maxValue; i+= factor)
@@ -107,15 +136,39 @@ namespace TsTimeline
                 drawingContext.DrawTextEx($"{i}", drawPoint.X, drawPoint.Y, alignment);
             }
 
-            RenderLine(drawingContext);
+            DrawBackGround(drawingContext);
+            DrawGrid(drawingContext);
         }
 
-        private void RenderLine(DrawingContext drawingContext)
+        private void DrawBackGround(DrawingContext drawingContext)
+        {
+            var pen = new Pen();
+
+            var brushes = new [] {Alter0,Alter1};
+
+            var h = (int)ItemHeight;
+
+            var scrollOffset = (int) (-ScrollViewer?.VerticalOffset ?? 0);
+            int index = -scrollOffset % (h * 2) > (h - 1) ? 1: 0;
+            for (int i = scrollOffset%h + h; i < ActualHeight; i+=h)
+            {
+                if (i < h)
+                {
+                    drawingContext.DrawRectangle(brushes[index++%2],pen,new Rect(0,h,ActualWidth,i ));
+                }
+                else
+                {
+                    drawingContext.DrawRectangle(brushes[index++%2],pen,new Rect(0,i,ActualWidth,h));                    
+                }
+            }
+        }
+
+        private void DrawGrid(DrawingContext drawingContext)
         {    
             var pen = new Pen()
             {
-                Brush = Brushes.Black,
-                Thickness = 0.1d,
+                Brush = Brushes.LightGray,
+                Thickness = 0.5d,
             };
 
             var lineInterval = 10;
@@ -134,7 +187,7 @@ namespace TsTimeline
                     break;
 
                 var beginY = ActualHeight;
-                var endY = 10;
+                var endY = 15;
                 drawingContext.DrawLine(pen, OffsetPoint(x,beginY), OffsetPoint(x,endY) );
             }
         }
@@ -155,7 +208,7 @@ namespace TsTimeline
             {
                 offset = ScrollViewer.HorizontalOffset;                
             }
-            return x <= offset;
+            return x < offset;
         }
         
         bool IsRightOutSide(double x)

@@ -8,28 +8,29 @@ namespace TsTimeline
     [TemplatePart(Name="PART_THUMB", Type=typeof(Thumb))]
     public class TriggerClip : Control
     {
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", typeof(double), typeof(TriggerClip),
-            new FrameworkPropertyMetadata(default(double),
+        public static readonly DependencyProperty ValueProperty =
+            DepProp.Register<TriggerClip, double>(
+                nameof(Value),
                 FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                OnValueChanged));
+                OnValueChanged);
+
+        public static readonly DependencyProperty IsReadOnlyProperty =
+            DepProp.Register<TriggerClip, bool>(nameof(IsReadOnly));
+
+        public static readonly DependencyProperty ScaleProperty =
+            DepProp.Register<TriggerClip, double>(nameof(Scale), 1, OnValueChanged);
+
         public double Value
         {
             get => (double) GetValue(ValueProperty);
             set => SetValue(ValueProperty, value);
         }
 
-        public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(
-            "IsReadOnly", typeof(bool), typeof(TriggerClip), new PropertyMetadata(default(bool)));
-
         public bool IsReadOnly
         {
             get => (bool) GetValue(IsReadOnlyProperty);
             set => SetValue(IsReadOnlyProperty, value);
         }
-
-        public static readonly DependencyProperty ScaleProperty = DependencyProperty.Register(
-            "Scale", typeof(double), typeof(TriggerClip), new PropertyMetadata(1d,OnValueChanged));
 
         public double Scale
         {

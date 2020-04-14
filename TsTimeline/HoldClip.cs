@@ -10,22 +10,22 @@ namespace TsTimeline
     [TemplatePart(Name="PART_CENTER", Type=typeof(Thumb))]
     public class HoldClip : Control
     {
-        public static readonly DependencyProperty StartValueProperty = DependencyProperty.Register(
-            "StartValue", typeof(double), typeof(HoldClip),
-            new FrameworkPropertyMetadata(default(double),
+        public static readonly DependencyProperty StartValueProperty =
+            DepProp.Register<HoldClip, double>(
+                nameof(StartValue),
                 FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                OnValueChanged));
+                OnValueChanged);
         public double StartValue
         {
             get => (double) GetValue(StartValueProperty);
             set => SetValue(StartValueProperty, value);
         }
 
-        public static readonly DependencyProperty EndValueProperty = DependencyProperty.Register(
-            "EndValue", typeof(double), typeof(HoldClip),
-            new FrameworkPropertyMetadata(default(double),
+        public static readonly DependencyProperty EndValueProperty = 
+            DepProp.Register<HoldClip, double>(
+                nameof(EndValue),
                 FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                OnValueChanged));
+                OnValueChanged);
 
         public double EndValue
         {
@@ -33,8 +33,8 @@ namespace TsTimeline
             set => SetValue(EndValueProperty, value);
         }
 
-        public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(
-            "IsReadOnly", typeof(bool), typeof(HoldClip), new PropertyMetadata(default(bool)));
+        public static readonly DependencyProperty IsReadOnlyProperty = 
+            DepProp.Register<HoldClip, bool>(nameof(IsReadOnly));
 
         public bool IsReadOnly
         {
@@ -42,8 +42,8 @@ namespace TsTimeline
             set => SetValue(IsReadOnlyProperty, value);
         }
 
-        public static readonly DependencyProperty ScaleProperty = DependencyProperty.Register(
-            "Scale", typeof(double), typeof(HoldClip), new PropertyMetadata(1d,OnValueChanged));
+        public static readonly DependencyProperty ScaleProperty =
+            DepProp.Register<HoldClip, double>(nameof(Scale),1, OnValueChanged);
 
         public double Scale
         {
@@ -182,9 +182,6 @@ namespace TsTimeline
 
             if(w > 0)
                 _center.Width = w;
-            else
-            {
-            }
         }
     }
 }
