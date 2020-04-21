@@ -3,10 +3,17 @@
     <PropertyGroup>
         <UseWPF>true</UseWPF>
         <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
+        <AssemblyName>Timeline</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Update="Vector3EditBoxStyle.xaml">
+        <Generator></Generator>
+      </Page>
     </ItemGroup>
 
 </Project>

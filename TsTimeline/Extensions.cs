@@ -26,6 +26,12 @@ namespace TsTimeline
                 new PropertyMetadata(default(TProperty),propertyChanged));
         }
         
+        public static DependencyProperty Register<TOwner, TProperty>(string propertyName, FrameworkPropertyMetadataOptions options)
+        {
+            return DependencyProperty.Register(propertyName, typeof(TProperty), typeof(TOwner),
+                new FrameworkPropertyMetadata(default(TProperty),options));
+        }
+        
         public static DependencyProperty Register<TOwner, TProperty>(string propertyName, FrameworkPropertyMetadataOptions options, PropertyChangedCallback propertyChanged)
         {
             return DependencyProperty.Register(propertyName, typeof(TProperty), typeof(TOwner),
@@ -83,6 +89,23 @@ namespace TsTimeline
                 if (t != null)
                     return t;
             }
+            return null;
+        }
+        
+        public static TParent FindVisualParentWithType<TParent>(this DependencyObject childElement)
+            where TParent : class
+        {
+            FrameworkElement parentElement = (FrameworkElement)VisualTreeHelper.GetParent(childElement);
+            if (parentElement != null)
+            {
+                if (parentElement is TParent parent)
+                {
+                    return parent;
+                }
+
+                return FindVisualParentWithType<TParent>(parentElement);
+            }
+
             return null;
         }
     }
