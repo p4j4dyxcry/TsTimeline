@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace TsTimeline
 {
@@ -13,7 +12,7 @@ namespace TsTimeline
     {
         // 実装速度優先でstaticで扱う。将来的にはTimelineControlから注入する形にする
         // こうしないとUIで2か所以上でTimeLineControlが使いづらくなる。
-        public static readonly ClipSelectorService ClipSelectorService = new ClipSelectorService();
+        public static SelectorService SelectorService => SelectorService.Default;
         
         public static readonly DependencyProperty IsSelectedProperty =
             DepProp.Register<ClipBase, bool>(nameof(IsSelected) , FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,IsSelectedChanged);
@@ -42,7 +41,7 @@ namespace TsTimeline
             set => SetValue(ScaleProperty, value);
         }
 
-        protected Canvas PART_Canvas;
+        protected Canvas _partCanvas;
         
         private static void ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -63,29 +62,12 @@ namespace TsTimeline
         
         protected virtual void OnSelectedChanged()
         {
-            ClipSelectorService.UpdateSelectedItems(this);
+            SelectorService.UpdateSelectedItems(this);
         }
 
         protected void OnMouseDownSelectedChanged()
         {
-            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
-            {
-                IsSelected = true;
-            }
-            else if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
-            {
-                IsSelected ^= true;
-            }
-            else
-            {
-                ClipSelectorService.SingleSelect(this);
-            }
-        }
-
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-//            PART_Canvas = this.GetTemplateChild("PART_CANVAS") as Canvas;
+            SelectorService.MouseDownSelectionChanged(this);
         }
     }
 }

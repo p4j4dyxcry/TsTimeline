@@ -149,7 +149,8 @@ namespace TsTimeline
             {
                 itemsHost.MouseDown += (s, e) =>
                 {
-                    ClipBase.ClipSelectorService.ClearSelect();
+                    ClipBase.SelectorService.ClearSelect();
+                    e.Handled = true;
                 };                
             }
         }

@@ -81,4 +81,16 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <!-- ClipsControl -->
+    <Style TargetType="timelineControl:ClipsControl">
+        <Setter Property="ItemsSource" Value="{Binding Clips}"/>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <Grid/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

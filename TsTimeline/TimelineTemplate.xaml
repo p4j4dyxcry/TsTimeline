@@ -6,8 +6,8 @@
         <timelineControl:HoldClip
             UseLayoutRounding="False"
             Scale="{Binding Scale , RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
-            StartValue="{Binding StartValue}"
-            EndValue="{Binding EndValue}"
+            StartValue="{Binding StartFrame}"
+            EndValue="{Binding EndFrame}"
             Width="{Binding CanvasActualWidth, RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
             Height="{Binding TrackHeight , RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
             ClipToBounds="False" />
@@ -17,7 +17,7 @@
         <timelineControl:TriggerClip
             UseLayoutRounding="False"
             Scale="{Binding Scale , RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
-            Value="{Binding Value}"
+            Value="{Binding Frame}"
             Width="{Binding CanvasActualWidth, RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
             Height="{Binding TrackHeight , RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
             ClipToBounds="False" />
@@ -62,6 +62,8 @@
                             Width="{TemplateBinding CanvasActualWidth}"
                             Height="{Binding ActualHeight , ElementName=PART_SCROLL_VIEWER}"
                             ScrollViewer="{Binding ElementName=PART_SCROLL_VIEWER}"
+                            Alter0="{TemplateBinding Alter0}"
+                            Alter1="{TemplateBinding Alter1}"
                             Scale="{Binding Scale , RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top" />
@@ -69,22 +71,18 @@
                                       Grid.Column="1"
                                       Margin="0,15,0,0"
                                       x:Name="PART_SCROLL_VIEWER"
-                                      Background="Transparent" 
+                                      Background="Transparent"
                                       VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible"
                                       HorizontalContentAlignment="Left">
-                            <ItemsControl ItemsSource="{TemplateBinding Tracks}" HorizontalAlignment="Left" x:Name="PART_TimeLineContentHost" Background="Transparent">
+                            <ItemsControl ItemsSource="{TemplateBinding Tracks}" HorizontalAlignment="Left"
+                                          x:Name="PART_TimeLineContentHost" Background="Transparent"
+                                          Width="{TemplateBinding CanvasActualWidth }">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Border x:Name="bd">
-                                            <ItemsControl ItemsSource="{Binding Clips}"
-                                                          Height="{Binding TrackHeight , RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
-                                                          ItemTemplateSelector="{timelineControl:InterfaceTemplateSelector}">
-                                                <ItemsControl.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <Grid/>
-                                                    </ItemsPanelTemplate>
-                                                </ItemsControl.ItemsPanel>
-                                            </ItemsControl>
+                                            <timelineControl:ClipsControl Height="{Binding TrackHeight , RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
+                                                                          Scale="{Binding Scale , RelativeSource={RelativeSource AncestorType=timelineControl:TsTimeline}}"
+                                                                          ItemTemplateSelector="{timelineControl:InterfaceTemplateSelector}"/>
                                         </Border>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
